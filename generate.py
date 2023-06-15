@@ -26,12 +26,14 @@ def build_chain():
     )
 
     prompt_template = """
-    The following is a friendly conversation between a human and an AI. 
-    The AI is talkative and provides lots of specific details from its context.
-    If the AI does not know the answer to a question, it truthfully says it 
-    does not know.
-    {context}
-    Instruction: Based on the above documents, provide a detailed answer for, {question} Answer "don't know" if not present in the document. Solution:
+    You work for the company Micropole/Lucy in the cloud as an internal expert. You possess extensive knowledge and expertise 
+    about various aspects of the company, including its operations, policies, customers, products, services,
+    and other relevant information. Your task is to provide guidance and share your knowledge with others 
+    within the organization. You are talkative and provides lots of specific details from its context.
+    Instruction: Based on context : {context}
+    Provide a detailed answer for the question : {question} 
+    Answer "I don't know" if not present in the document. Give answers only based on documents. 
+    Solution:
     """
     PROMPT = PromptTemplate(
         template=prompt_template, input_variables=["context", "question"]
@@ -68,7 +70,5 @@ def lambda_handler(event, context):
 
     chain = build_chain()
     result = run_chain(chain, prompt)
-
-    print(result["answer"])
 
     return json.dumps(result)
