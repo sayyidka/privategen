@@ -1,7 +1,7 @@
 import os
 import json
 from kendra_index_retriever import KendraIndexRetriever
-from langchain.llms import OpenAI
+from langchain.chat_models import ChatOpenAI
 from langchain.chains import RetrievalQA
 from langchain.schema import Document
 from langchain.prompts import PromptTemplate
@@ -19,7 +19,7 @@ def build_chain():
     region = os.environ["AWS_REGION"]
     kendra_index_id = os.environ["KENDRA_INDEX_ID"]
 
-    llm = OpenAI(temperature=0.2, max_tokens=600)
+    llm = ChatOpenAI(model_name="gpt-3.5-turbo", temperature=0.2, max_tokens=600)
 
     retriever = KendraIndexRetriever(
         kendraindex=kendra_index_id, awsregion=region, return_source_documents=True
